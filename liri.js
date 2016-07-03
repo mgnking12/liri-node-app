@@ -1,21 +1,10 @@
 var keys = require('./keys.js');
 var inquirer = require('inquirer');
-//var command = process.argv[2];
 var fs = require('fs');
-// var random = [];
-// var spotSong;
-// fs.readFile('./random.txt', 'utf8', function(err, data) {
-//     if (err) {
-//         return console.log(err);
-//     }
-//     var dataARR = data.split(",");
-//     spotSong = dataARR[1];
-//         console.log(spotSong)
-// });
 inquirer.prompt([{
     type: "list",
     message: "Make a choice.",
-    choices: ["Twitter", "Music", "Movies", "Never Mind"],
+    choices: ["Twitter", "Music", "Movies"],
     name: "action"
 }]).then(function(answers) {
 
@@ -25,6 +14,9 @@ inquirer.prompt([{
             break;
         case 'Music':
             spotify();
+            break;
+        case 'Movies':
+            movies();
             break;
     }
 });
@@ -57,10 +49,6 @@ function spotify() {
         message: "What song?",
         name: "song"
     }]).then(function(answers) {
-
-        // for (var i = 3; i < process.argv.length; i++) {
-        //     spotArr.push(process.argv[i])
-        // }
         spotify.search({
             type: 'track',
             query: answers.song,
@@ -75,4 +63,26 @@ function spotify() {
             console.log("Link: " + data.tracks.items[0].external_urls.spotify);
         });
     })
+}
+
+function movies() {
+    inquirer.prompt([{
+        type: "input",
+        message: "What movie?",
+        name: "movie"
+    }]).then(function(answers) {
+        var request = require('request');
+        var movie = answers.movie;
+        request("http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&r=json&tomatoes=true", function(error, response, body) {
+            if (!error && response.statusCode == 200) {
+                console.log("Title: " + JSON.parse(body)["Title"]);
+                console.log("Year: " + JSON.parse(body)["Year"]);
+                console.log("IMDB Rating: " + JSON.parse(body)["imdbRating"]);
+                console.log("Country: " + JSON.parse(body)["Country"]);
+                console.log("Plot: " + JSON.parse(body)["Plot"]);
+                console.log("Actors: " + JSON.parse(body)["Actors"]);
+                console.log("Rotten Tomatoes Rating: " + JSON.parse(body)["tomatoRating"] + " (" + JSON.parse(body)["tomatoURL"] + ")");
+            }
+        });
+    });
 }
