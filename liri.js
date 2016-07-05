@@ -29,7 +29,7 @@ function twitter() {
     };
     client.get('statuses/user_timeline', params, function(error, tweets, response) {
         if (!error) {
-            console.log("The last 20 Tweets:")
+            console.log("The last 20 Tweets:");
             for (var i = 0; i < 20; i++) {
                 console.log(tweets[i].text);
                 console.log("");
@@ -62,7 +62,7 @@ function spotify() {
             console.log("Album: " + data.tracks.items[0].album.name);
             console.log("Link: " + data.tracks.items[0].external_urls.spotify);
         });
-    })
+    });
 }
 
 function movies() {
@@ -75,13 +75,13 @@ function movies() {
         var movie = answers.movie;
         request("http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&r=json&tomatoes=true", function(error, response, body) {
             if (!error && response.statusCode == 200) {
-                console.log("Title: " + JSON.parse(body)["Title"]);
-                console.log("Year: " + JSON.parse(body)["Year"]);
-                console.log("IMDB Rating: " + JSON.parse(body)["imdbRating"]);
-                console.log("Country: " + JSON.parse(body)["Country"]);
-                console.log("Plot: " + JSON.parse(body)["Plot"]);
-                console.log("Actors: " + JSON.parse(body)["Actors"]);
-                console.log("Rotten Tomatoes Rating: " + JSON.parse(body)["tomatoRating"] + " (" + JSON.parse(body)["tomatoURL"] + ")");
+                console.log("Title: " + JSON.parse(body).Title);
+                console.log("Year: " + JSON.parse(body).Year);
+                console.log("IMDB Rating: " + JSON.parse(body).imdbRating);
+                console.log("Country: " + JSON.parse(body).Country);
+                console.log("Plot: " + JSON.parse(body).Plot);
+                console.log("Actors: " + JSON.parse(body).Actors);
+                console.log("Rotten Tomatoes Rating: " + JSON.parse(body).tomatoRating + " (" + JSON.parse(body).tomatoURL + ")");
             }
         });
     });
